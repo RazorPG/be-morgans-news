@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>verification code</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        margin: auto;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        text-align: center;
+        padding: 20px;
+        background-color: #007bff;
+      }
+      .header h1 {
+        color: #ffffff;
+        margin: 0;
+        font-size: 24px;
+      }
+      .body {
+        padding: 20px;
+        font-size: 16px;
+        color: #333333;
+      }
+      .body h2 {
+        color: #007bff;
+        font-size: 20px;
+        margin-top: 0;
+      }
+      .body .activated-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px 20px;
+        font-size: 12px;
+        color: #777777;
+        border-top: 1px solid #dddddd;
+        background-color: #f9f9f9;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Selamat Datang!</h1>
+      </div>
+      <div class="body">
+        <h2>Hello, <%= user %></h2>
+        <p>
+          Terima kasih telah mendaftar di layanan kami! berikut adalah informasi
+          dari akun Anda:
+        </p>
+        <ul>
+          <li><strong>Username:</strong> <%= user %></li>
+          <li><strong>Email:</strong> <%= email %></li>
+          <li><strong>Tanggal Pendaftaran:</strong> <%= createdAt %></li>
+        </ul>
+        <a class="activated-btn" href="<%= linkActivate %>" target="_blank">
+          Aktifkan Akun
+        </a>
+      </div>
+      <div class="footer">
+        <p>
+          &copy; <%= new Date().getFullYear() %> Morgans News. Semua hak
+          Dilindungi
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
