@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken'
-import { Iuser } from '../models/user.model'
 import { SECRET_JWT } from './environments'
 
-export const jwtAssign = (payload: Iuser) => {
+export const jwtAssign = (payload: any) => {
   return jwt.sign({ ...payload }, SECRET_JWT, {
     expiresIn: '1d',
   })

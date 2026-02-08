@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
 
-export const hashPassword = (password: string): string => {
+export const hashText = (password: string): string => {
   return bcrypt.hashSync(password, 10)
 }
 
-export const comparePassword = (
+export const compareText = (
   password: string,
   userPassword: string
 ): boolean => {
