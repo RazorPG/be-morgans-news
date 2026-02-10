@@ -5,8 +5,6 @@ import { createContentHtmlSendMail, sendMail } from '../utils/mail/mail'
 import { hashSync } from 'bcrypt'
 import { IuserToken } from '../types/auth.type'
 import { CLIENT_HOST } from '../utils/environments'
-import { jwtAssign } from '../utils/jwt'
-import { generateOTP } from '../utils/otp'
 
 const Schema = mongoose.Schema
 

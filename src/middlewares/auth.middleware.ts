@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
+import { response } from '../utils/response'
 
 export const isSession = (req: Request, res: Response, next: NextFunction) => {
   if (res.locals.user) {
@@ -23,6 +24,17 @@ export const isUseSession = (
         message: 'No session yet',
       },
     })
+  }
+  return next()
+}
+
+export const isRoleAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (res.locals?.user?.role !== 'admin') {
+    return response.forbiddenError(res)
   }
   return next()
 }

@@ -1,9 +1,9 @@
 import { Response } from 'express'
 
 interface Pagination {
-  countPage: number
-  page: number
-  MaxPerPage: number
+  total: number
+  totalPages: number
+  current: number
 }
 
 export const response = {
@@ -22,9 +22,9 @@ export const response = {
     data: [],
     pagination: Pagination
   ) => {
-    return res.status(401).json({
+    return res.status(200).json({
       meta: {
-        status: 401,
+        status: 200,
         message,
       },
       data,
