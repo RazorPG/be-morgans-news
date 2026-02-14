@@ -1,0 +1,21 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SECRET_JWT = exports.CLOUDINARY_SECRET_KEY = exports.CLOUDINARY_API_KEY = exports.CLOUDINARY_CLOUD_NAME = exports.CLIENT_HOST = exports.EMAIL_SMTP_SERVICE_NAME = exports.EMAIL_SMTP_HOST = exports.EMAIL_SMTP_PORT = exports.EMAIL_SMTP_USER = exports.EMAIL_SMTP_PASS = exports.EMAIL_SMTP_SECURE = exports.MONGO_URL = exports.PORT = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+exports.PORT = Number(process.env.PORT) || 3000;
+exports.MONGO_URL = process.env.MONGO_URL || '';
+exports.EMAIL_SMTP_SECURE = Boolean(process.env.SMPTP_SECURE) || false;
+exports.EMAIL_SMTP_PASS = process.env.EMAIL_SMTP_PASS || '';
+exports.EMAIL_SMTP_USER = process.env.EMAIL_SMTP_USER || '';
+exports.EMAIL_SMTP_PORT = Number(process.env.EMAIL_SMTP_PORT) || 465;
+exports.EMAIL_SMTP_HOST = process.env.EMAIL_SMTP_HOST || '';
+exports.EMAIL_SMTP_SERVICE_NAME = process.env.EMAIL_SMTP_SERVICE_NAME || '';
+exports.CLIENT_HOST = process.env.CLIENT_HOST || '';
+exports.CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || '';
+exports.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '';
+exports.CLOUDINARY_SECRET_KEY = process.env.CLOUDINARY_SECRET_KEY || '';
+exports.SECRET_JWT = process.env.SECRET_JWT || '';

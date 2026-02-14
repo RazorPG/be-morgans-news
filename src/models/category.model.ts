@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import * as Yup from 'yup'
 
-export interface ICategory {
+export interface Icategory {
   name: string
   slug: string
   isActive: boolean
@@ -13,7 +13,7 @@ export const categoryDAO = Yup.object({
   name: Yup.string().required(),
 })
 
-const categorySchema = new Schema<ICategory>({
+const categorySchema = new Schema<Icategory>({
   name: {
     type: Schema.Types.String,
     require: true,
@@ -25,7 +25,7 @@ const categorySchema = new Schema<ICategory>({
   isActive: {
     type: Schema.Types.Boolean,
     require: true,
-    default: false,
+    default: true,
   },
 })
 

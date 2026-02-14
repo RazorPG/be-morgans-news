@@ -1,8 +1,15 @@
-import articleModel, { articleDAO } from './../models/article.model'
+import articleModel, { articleDAO, Iarticle } from './../models/article.model'
 import { Request, Response } from 'express'
-import { createArticleDB, getArticlesDB } from '../services/article.service'
+import {
+  createArticleDB,
+  deleteArticleDB,
+  getArticleByIdDB,
+  getArticlesDB,
+  updateArticleDB,
+} from '../services/article.service'
 import { response } from '../utils/response'
 import { getCategoryBySlug } from '../services/category.service'
+import * as Yup from 'yup'
 
 export const createArticle = async (req: Request, res: Response) => {
   try {
@@ -20,7 +27,7 @@ export const createArticle = async (req: Request, res: Response) => {
       authorId: user._id,
       categoryId: categoryDB._id,
     })
-    return response.success(res, 'success create article', 200)
+    return response.success(res, 'success create article', 201)
   } catch (error: any) {
     if (error.errors) {
       return response.requestError(res, error.errors[0])
@@ -61,6 +68,64 @@ export const getArticles = async (req: Request, res: Response) => {
       totalPages: Math.ceil(countData / Number(limit)),
       total: countData,
     })
+  } catch (error: any) {
+    return response.serverError(res, error.message)
+  }
+}
+
+export const getArticleById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const result = await getArticleByIdDB(String(id))
+
+    return response.success(res, 'success get article by id', 200, result)
+  } catch (error: any) {
+    return response.serverError(res, error.message)
+  }
+}
+
+export const updateArticle = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+
+    await Yup.object({
+      title: Yup.string().min(5, 'Title must be at least 5 characters').max(30),
+      description: Yup.string()
+        .min(10, 'Description must be at least 10 characters')
+        .max(50),
+      body: Yup.string()
+        .min(100, 'body must be at least 20 characters')
+        .max(10000),
+      isHeadline: Yup.boolean(),
+      categoryId: Yup.string(),
+    }).validate(req.body)
+
+    const article = res.locals.article
+    const payload = {
+      title: req.body?.title || article.title,
+      description: req.body?.description || article.description,
+      body: req.body?.body || article.body,
+      isHeadline: req.body?.isHeadline || article.isHeadline,
+      categoryId: req.body?.categoryId || article.categoryId,
+    } as Iarticle
+
+    await updateArticleDB(String(id), payload)
+
+    return response.success(res, 'success updated article', 200)
+  } catch (error: any) {
+    if (error.errors) {
+      return response.requestError(res, error.errors[0])
+    }
+    return response.serverError(res, error.message)
+  }
+}
+
+export const deleteArticle = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    await deleteArticleDB(String(id))
+
+    return response.success(res, 'success delete article', 200)
   } catch (error: any) {
     return response.serverError(res, error.message)
   }

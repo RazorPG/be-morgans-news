@@ -9,8 +9,8 @@ export interface Iarticle {
   body: string
   image: string
   isHeadline: boolean
-  categoryId: string
-  authorId: string
+  categoryId: string | mongoose.Schema.Types.ObjectId
+  authorId: string | mongoose.Schema.Types.ObjectId
 }
 
 export const articleDAO = Yup.object({
@@ -21,7 +21,7 @@ export const articleDAO = Yup.object({
   description: Yup.string()
     .required()
     .min(10, 'Description must be at least 10 characters')
-    .max(30),
+    .max(50),
   body: Yup.string()
     .required()
     .min(100, 'body must be at least 20 characters')
@@ -31,7 +31,7 @@ export const articleDAO = Yup.object({
   isHeadline: Yup.boolean(),
 })
 
-const articleSchema = new Schema(
+const articleSchema = new Schema<Iarticle>(
   {
     title: {
       require: true,
