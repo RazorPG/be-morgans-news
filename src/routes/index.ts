@@ -4,6 +4,7 @@ import categoryRouter from './category.route'
 import articleRouter from './article.route'
 import reactionRouter from './reaction.route'
 import commentRouter from './comment.route'
+import mediaRouter from './media.route'
 
 const _routes = [
   { prefix: '/api/auth', router: authRouter },
@@ -11,6 +12,7 @@ const _routes = [
   { prefix: '/api/articles', router: articleRouter },
   { prefix: '/api/reactions', router: reactionRouter },
   { prefix: '/api/comments', router: commentRouter },
+  { prefix: '/api/media', router: mediaRouter },
 ]
 
 export default function (app: Application) {
