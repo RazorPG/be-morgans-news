@@ -1,10 +1,10 @@
-import userModel, { Iuser, OTP } from '../models/user.model'
-import { hashText } from '../utils/encription'
+import userModel, { Iuser, OTP } from "../models/user.model"
+import { hashText } from "../utils/encription"
 
 export const createAccount = async (
   payload: Omit<
     Iuser,
-    'role' | 'profilePicture' | 'isActive' | 'OTP' | 'activationCode'
+    "role" | "profilePicture" | "isActive" | "OTP" | "activationCode"
   >
 ) => {
   return await userModel.create(payload)
@@ -26,7 +26,7 @@ export const sendOTP = async (email: string, otp: OTP) => {
   return await userModel.findOneAndUpdate(
     { email },
     { $set: { OTP: otp } },
-    { new: true, hookType: 'resetPassword' }
+    { new: true, hookType: "resetPassword" }
   )
 }
 
@@ -35,7 +35,7 @@ export const verifyOTP = async (email: string) => {
     { email },
     {
       $set: {
-        'OTP.isVerify': true,
+        "OTP.isVerify": true,
       },
     },
     { new: true }
@@ -50,6 +50,6 @@ export const changePasswordUser = async (email: string, password: string) => {
         password: hashText(password),
       },
     },
-    { new: true, hookType: 'changePassword' }
+    { new: true, hookType: "changePassword" }
   )
 }

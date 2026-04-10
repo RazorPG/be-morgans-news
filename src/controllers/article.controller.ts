@@ -1,15 +1,18 @@
-import articleModel, { articleDAO, Iarticle } from './../models/article.model'
-import { Request, Response } from 'express'
+import articleModel, { articleDAO, Iarticle } from "./../models/article.model"
+import { Request, Response } from "express"
 import {
   createArticleDB,
   deleteArticleDB,
   getArticleByIdDB,
   getArticlesDB,
   updateArticleDB,
-} from '../services/article.service'
-import { response } from '../utils/response'
-import { getCategoryBySlug } from '../services/category.service'
-import * as Yup from 'yup'
+} from "../services/article.service"
+import { response } from "../utils/response"
+import {
+  getCategoryBySlug,
+  getCategoriesDB,
+} from "../services/category.service"
+import * as Yup from "yup"
 
 export const createArticle = async (req: Request, res: Response) => {
   try {
@@ -19,7 +22,7 @@ export const createArticle = async (req: Request, res: Response) => {
     const categoryDB = await getCategoryBySlug(category)
 
     if (!categoryDB?.slug) {
-      return response.error(res, 'categories is not available', 403)
+      return response.error(res, "categories is not available", 403)
     }
     const user = res.locals.user
     await createArticleDB({
@@ -27,7 +30,7 @@ export const createArticle = async (req: Request, res: Response) => {
       authorId: user._id,
       categoryId: categoryDB._id,
     })
-    return response.success(res, 'success create article', 201)
+    return response.success(res, "success create article", 201)
   } catch (error: any) {
     if (error.errors) {
       return response.requestError(res, error.errors[0])
@@ -38,32 +41,54 @@ export const createArticle = async (req: Request, res: Response) => {
 
 export const getArticles = async (req: Request, res: Response) => {
   try {
-    const { page = 1, limit = 2, search } = req.query
+    const { page = 1, limit = 6, search, categories } = req.query
 
-    const query = {}
+    const query: any = {}
+
+    // Handle search filter
     if (search) {
       Object.assign(query, {
         $or: [
           {
-            title: { $regex: search, $options: 'i' },
+            title: { $regex: search, $options: "i" },
           },
           {
-            description: { $regex: search, $options: 'i' },
+            description: { $regex: search, $options: "i" },
           },
           {
-            body: { $regex: search, $options: 'i' },
+            body: { $regex: search, $options: "i" },
           },
         ],
       })
     }
+
+    if (categories) {
+      const categoryNames = String(categories)
+        .split(",")
+        .map(cat => cat.trim().toLowerCase())
+
+      const allCategories = await getCategoriesDB()
+
+      const matchedCategoryIds = allCategories
+        .filter(
+          cat =>
+            categoryNames.includes(cat.name.toLowerCase()) ||
+            categoryNames.includes(cat.slug.toLowerCase())
+        )
+        .map(cat => cat._id)
+
+      if (matchedCategoryIds.length > 0) {
+        query.categoryId = { $in: matchedCategoryIds }
+      }
+    }
+
     const articles = (await getArticlesDB(
       Number(limit),
       Number(page),
       query
     )) as any
-    console.log(articles)
-    const countData = await articleModel.countDocuments()
-    return response.pagination(res, 'success get articles', articles, {
+    const countData = await articleModel.countDocuments(query)
+    return response.pagination(res, "success get articles", articles, {
       current: Number(page),
       totalPages: Math.ceil(countData / Number(limit)),
       total: countData,
@@ -78,7 +103,7 @@ export const getArticleById = async (req: Request, res: Response) => {
     const { id } = req.params
     const result = await getArticleByIdDB(String(id))
 
-    return response.success(res, 'success get article by id', 200, result)
+    return response.success(res, "success get article by id", 200, result)
   } catch (error: any) {
     return response.serverError(res, error.message)
   }
@@ -89,12 +114,12 @@ export const updateArticle = async (req: Request, res: Response) => {
     const { id } = req.params
 
     await Yup.object({
-      title: Yup.string().min(5, 'Title must be at least 5 characters').max(30),
+      title: Yup.string().min(5, "Title must be at least 5 characters").max(30),
       description: Yup.string()
-        .min(10, 'Description must be at least 10 characters')
+        .min(10, "Description must be at least 10 characters")
         .max(50),
       body: Yup.string()
-        .min(100, 'body must be at least 20 characters')
+        .min(100, "body must be at least 20 characters")
         .max(10000),
       isHeadline: Yup.boolean(),
       categoryId: Yup.string(),
@@ -111,7 +136,7 @@ export const updateArticle = async (req: Request, res: Response) => {
 
     await updateArticleDB(String(id), payload)
 
-    return response.success(res, 'success updated article', 200)
+    return response.success(res, "success updated article", 200)
   } catch (error: any) {
     if (error.errors) {
       return response.requestError(res, error.errors[0])
@@ -125,7 +150,7 @@ export const deleteArticle = async (req: Request, res: Response) => {
     const { id } = req.params
     await deleteArticleDB(String(id))
 
-    return response.success(res, 'success delete article', 200)
+    return response.success(res, "success delete article", 200)
   } catch (error: any) {
     return response.serverError(res, error.message)
   }

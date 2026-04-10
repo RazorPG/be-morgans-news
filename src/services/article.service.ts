@@ -1,8 +1,8 @@
-import { Iarticle } from './../models/article.model'
-import articleModel from '../models/article.model'
+import { Iarticle } from "./../models/article.model"
+import articleModel from "../models/article.model"
 
 export const createArticleDB = async (
-  payload: Omit<Iarticle, 'isHeadline'>
+  payload: Omit<Iarticle, "isHeadline">
 ) => {
   await articleModel.create(payload)
 }
@@ -14,6 +14,8 @@ export const getArticlesDB = async (
 ) => {
   return await articleModel
     .find(query)
+    .populate("categoryId", "slug")
+    .populate("authorId", "username")
     .limit(limit)
     .skip((page - 1) * limit)
     .sort({ createdAt: -1 })
@@ -21,7 +23,10 @@ export const getArticlesDB = async (
 }
 
 export const getArticleByIdDB = async (id: string) => {
-  return await articleModel.findById({ _id: id })
+  return await articleModel
+    .findById({ _id: id })
+    .populate("categoryId", "name slug")
+    .populate("authorId", "username")
 }
 
 export const updateArticleDB = async (id: string, payload: Iarticle) => {

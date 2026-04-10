@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import * as Yup from 'yup'
+import mongoose from "mongoose"
+import * as Yup from "yup"
 
 const Schema = mongoose.Schema
 
@@ -14,17 +14,13 @@ export interface Iarticle {
 }
 
 export const articleDAO = Yup.object({
-  title: Yup.string()
-    .required()
-    .min(5, 'Title must be at least 5 characters')
-    .max(30),
+  title: Yup.string().required().min(5, "Title must be at least 5 characters"),
   description: Yup.string()
     .required()
-    .min(10, 'Description must be at least 10 characters')
-    .max(50),
+    .min(10, "Description must be at least 10 characters"),
   body: Yup.string()
     .required()
-    .min(100, 'body must be at least 20 characters')
+    .min(100, "body must be at least 20 characters")
     .max(10000),
   image: Yup.string().required(),
   category: Yup.string().required(),
@@ -57,17 +53,16 @@ const articleSchema = new Schema<Iarticle>(
     categoryId: {
       require: true,
       type: Schema.Types.ObjectId,
-      ref: 'category',
+      ref: "category",
     },
     authorId: {
       require: true,
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: "user",
     },
   },
   { timestamps: true }
 )
-
-const articleModel = mongoose.model('article', articleSchema)
+const articleModel = mongoose.model("article", articleSchema)
 
 export default articleModel

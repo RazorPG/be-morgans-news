@@ -1,17 +1,17 @@
-import { NextFunction, Request, Response } from 'express'
-import { jwtVerify } from '../utils/jwt'
+import { NextFunction, Request, Response } from "express"
+import { jwtVerify } from "../utils/jwt"
 
 export const decentralizedToken = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  let token = ''
+  let token = ""
   if (req?.headers?.authorization) {
-    token = req.headers.authorization.split(' ')[1] || ''
+    token = req.headers.authorization.split(" ")[1] || ""
   }
 
-  if (token === '') {
+  if (token === "") {
     return next()
   }
 

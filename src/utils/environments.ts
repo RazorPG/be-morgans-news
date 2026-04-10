@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export const PORT: number = Number(process.env.PORT) || 3000
+export const PORT: number = Number(process.env.PORT) || 3001
 export const MONGO_URL: string = process.env.MONGO_URL || ''
 export const EMAIL_SMTP_SECURE: boolean =
   Boolean(process.env.SMPTP_SECURE) || false

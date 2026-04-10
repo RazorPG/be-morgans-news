@@ -7,8 +7,8 @@ export const uploadFile = async (req: Request, res: Response) => {
     if (!req.file) {
       return response.requestError(res, 'file not found')
     }
-    await upload.uploadSingle(req.file)
-    return response.success(res, 'success upload file', 201)
+    const result = await upload.uploadSingle(req.file)
+    return response.success(res, 'success upload file', 201, result)
   } catch (error: any) {
     return response.serverError(res, error.message)
   }
