@@ -1,7 +1,7 @@
-import categoryModel, { Icategory } from '../models/category.model'
+import categoryModel, { Icategory } from "../models/category.model"
 
 export const createCategoryDB = async (
-  payload: Omit<Icategory, 'isActive'>
+  payload: Omit<Icategory, "isActive">
 ) => {
   return await categoryModel.create(payload)
 }
@@ -17,7 +17,7 @@ export const updateCategoryDB = async (
 ) => {
   return await categoryModel.findByIdAndUpdate(
     { _id: id },
-    { name, slug: name.toLowerCase().split(' ').join('-'), isActive },
+    { name, slug: name.toLowerCase().split(" ").join("-"), isActive },
     { new: true }
   )
 }

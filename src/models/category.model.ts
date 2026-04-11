@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import * as Yup from 'yup'
+import mongoose from "mongoose"
+import * as Yup from "yup"
 
 export interface Icategory {
   name: string
@@ -13,22 +13,25 @@ export const categoryDAO = Yup.object({
   name: Yup.string().required(),
 })
 
-const categorySchema = new Schema<Icategory>({
-  name: {
-    type: Schema.Types.String,
-    require: true,
+const categorySchema = new Schema<Icategory>(
+  {
+    name: {
+      type: Schema.Types.String,
+      require: true,
+    },
+    slug: {
+      type: Schema.Types.String,
+      require: true,
+    },
+    isActive: {
+      type: Schema.Types.Boolean,
+      require: true,
+      default: true,
+    },
   },
-  slug: {
-    type: Schema.Types.String,
-    require: true,
-  },
-  isActive: {
-    type: Schema.Types.Boolean,
-    require: true,
-    default: true,
-  },
-})
+  { timestamps: true }
+)
 
-const categoryModel = mongoose.model('category', categorySchema)
+const categoryModel = mongoose.model("category", categorySchema)
 
 export default categoryModel

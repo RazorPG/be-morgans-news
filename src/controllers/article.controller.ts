@@ -114,10 +114,11 @@ export const updateArticle = async (req: Request, res: Response) => {
     const { id } = req.params
 
     await Yup.object({
-      title: Yup.string().min(5, "Title must be at least 5 characters").max(30),
-      description: Yup.string()
-        .min(10, "Description must be at least 10 characters")
-        .max(50),
+      title: Yup.string().min(5, "Title must be at least 5 characters"),
+      description: Yup.string().min(
+        10,
+        "Description must be at least 10 characters"
+      ),
       body: Yup.string()
         .min(100, "body must be at least 20 characters")
         .max(10000),

@@ -14,7 +14,7 @@ export const getArticlesDB = async (
 ) => {
   return await articleModel
     .find(query)
-    .populate("categoryId", "slug")
+    .populate("categoryId", "name slug")
     .populate("authorId", "username")
     .limit(limit)
     .skip((page - 1) * limit)

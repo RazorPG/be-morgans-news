@@ -11,6 +11,13 @@ export const getCommentsByArticle = async (id: string) => {
     .sort({ createdAt: -1 })
 }
 
+export const getCommentsByUserId = async (userId: string) => {
+  return await commentModel
+    .find({ userId })
+    .populate("articleId", "title")
+    .sort({ createdAt: -1 })
+}
+
 export const getCommentDB = async (id: string) => {
   return await commentModel.findById({ _id: id }).populate("userId", "username")
 }
